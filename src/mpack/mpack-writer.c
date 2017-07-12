@@ -464,7 +464,7 @@ void mpack_write_tag(mpack_writer_t* writer, mpack_tag_t value) {
         #if MPACK_FLOAT_POINT
         case mpack_type_float:  mpack_write_float (writer, value.v.f); break;
         case mpack_type_double: mpack_write_double(writer, value.v.d); break;
-	#endif
+        #endif
         case mpack_type_int:    mpack_write_int   (writer, value.v.i); break;
         case mpack_type_uint:   mpack_write_uint  (writer, value.v.u); break;
 

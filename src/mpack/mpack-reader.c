@@ -750,7 +750,7 @@ static size_t mpack_parse_tag(mpack_reader_t* reader, mpack_tag_t* tag) {
             tag->exttype = mpack_load_i8(reader->data + 5);
             return MPACK_TAG_SIZE_EXT32;
 
-	#if MPACK_FLOAT_POINT
+        #if MPACK_FLOAT_POINT
         // float
         case 0xca:
             if (!mpack_reader_ensure(reader, MPACK_TAG_SIZE_FLOAT))
@@ -766,7 +766,7 @@ static size_t mpack_parse_tag(mpack_reader_t* reader, mpack_tag_t* tag) {
             tag->type = mpack_type_double;
             tag->v.d = mpack_load_double(reader->data + 1);
             return MPACK_TAG_SIZE_DOUBLE;
-	#endif
+        #endif
 
         // uint8
         case 0xcc:
@@ -1068,14 +1068,14 @@ static void mpack_print_element(mpack_reader_t* reader, size_t depth, FILE* file
             fprintf(file, val.v.b ? "true" : "false");
             break;
 
-	#if MPACK_FLOAT_POINT
+        #if MPACK_FLOAT_POINT
         case mpack_type_float:
             fprintf(file, "%f", val.v.f);
             break;
         case mpack_type_double:
             fprintf(file, "%f", val.v.d);
             break;
-	#endif
+        #endif
 
         case mpack_type_int:
             fprintf(file, "%" PRIi64, val.v.i);

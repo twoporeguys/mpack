@@ -147,7 +147,7 @@ struct mpack_node_data_t {
         #if MPACK_FLOAT_POINT
         float    f; /* The value if the type is float. */
         double   d; /* The value if the type is double. */
-	#endif
+        #endif
         int64_t  i; /* The value if the type is signed int. */
         uint64_t u; /* The value if the type is unsigned int. */
         size_t offset; /* The byte offset for str, bin and ext */

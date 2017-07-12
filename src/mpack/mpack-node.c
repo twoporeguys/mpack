@@ -547,7 +547,7 @@ static void mpack_tree_parse_node(mpack_tree_parser_t* parser, mpack_node_data_t
             mpack_tree_parse_bytes(parser, node);
             return;
 
-	#if MPACK_FLOAT_POINT
+        #if MPACK_FLOAT_POINT
         // float
         case 0xca:
             node->type = mpack_type_float;
@@ -559,7 +559,7 @@ static void mpack_tree_parse_node(mpack_tree_parser_t* parser, mpack_node_data_t
             node->type = mpack_type_double;
             node->value.d = mpack_tree_double(parser);
             return;
-	#endif
+        #endif
 
         // uint8
         case 0xcc:
@@ -1135,7 +1135,7 @@ mpack_tag_t mpack_node_tag(mpack_node_t node) {
         #if MPACK_FLOAT_POINT
         case mpack_type_float:   tag.v.f = node.data->value.f;          break;
         case mpack_type_double:  tag.v.d = node.data->value.d;          break;
-	#endif
+        #endif
         case mpack_type_int:     tag.v.i = node.data->value.i;          break;
         case mpack_type_uint:    tag.v.u = node.data->value.u;          break;
 
@@ -1169,14 +1169,14 @@ static void mpack_node_print_element(mpack_node_t node, size_t depth, FILE* file
             fprintf(file, data->value.b ? "true" : "false");
             break;
 
-	#if MPACK_FLOAT_POINT
+        #if MPACK_FLOAT_POINT
         case mpack_type_float:
             fprintf(file, "%f", data->value.f);
             break;
         case mpack_type_double:
             fprintf(file, "%f", data->value.d);
             break;
-	#endif
+        #endif
 
         case mpack_type_int:
             fprintf(file, "%" PRIi64, data->value.i);

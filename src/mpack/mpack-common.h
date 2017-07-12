@@ -206,7 +206,7 @@ typedef struct mpack_tag_t {
         #if MPACK_FLOAT_POINT
         double   d; /**< The value if the type is double. */
         float    f; /**< The value if the type is float. */
-	#endif
+        #endif
         bool     b; /**< The value if the type is bool. */
 
         /** The number of bytes if the type is str, bin or ext. */
