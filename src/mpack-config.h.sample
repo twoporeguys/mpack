@@ -84,6 +84,15 @@
 #endif
 
 /**
+ * @def MPACK_FLOAT_POINT
+ *
+ * Enables floating point related features in MessagePack. Enabled by default.
+ */
+#ifndef MPACK_FLOAT_POINT
+#define MPACK_FLOAT_POINT 1
+#endif
+
+/**
  * @}
  */
 

@@ -549,6 +549,7 @@ MPACK_HEADER_START
 
 #endif
 
+#if MPACK_FLOAT_POINT
 #if defined(__FLOAT_WORD_ORDER__) && defined(__BYTE_ORDER__)
 
     // We check where possible that the float byte order matches the
@@ -569,7 +570,7 @@ MPACK_HEADER_START
 #ifndef MPACK_CHECK_FLOAT_ORDER
     #define MPACK_CHECK_FLOAT_ORDER() /* nothing */
 #endif
-
+#endif
 
 /*
  * Here we define mpack_assert() and mpack_break(). They both work like a normal

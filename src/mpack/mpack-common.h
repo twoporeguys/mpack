@@ -168,8 +168,10 @@ typedef enum mpack_type_t {
     mpack_type_bool,    /**< A boolean (true or false.) */
     mpack_type_int,     /**< A 64-bit signed integer. */
     mpack_type_uint,    /**< A 64-bit unsigned integer. */
+    #if MPACK_FLOAT_POINT
     mpack_type_float,   /**< A 32-bit IEEE 754 floating point number. */
     mpack_type_double,  /**< A 64-bit IEEE 754 floating point number. */
+    #endif
     mpack_type_str,     /**< A string. */
     mpack_type_bin,     /**< A chunk of binary data. */
     mpack_type_ext,     /**< A typed MessagePack extension object containing a chunk of binary data. */
@@ -201,8 +203,10 @@ typedef struct mpack_tag_t {
     {
         uint64_t u; /**< The value if the type is unsigned int. */
         int64_t  i; /**< The value if the type is signed int. */
+        #if MPACK_FLOAT_POINT
         double   d; /**< The value if the type is double. */
         float    f; /**< The value if the type is float. */
+	#endif
         bool     b; /**< The value if the type is bool. */
 
         /** The number of bytes if the type is str, bin or ext. */
@@ -263,6 +267,7 @@ MPACK_INLINE mpack_tag_t mpack_tag_uint(uint64_t value) {
     return ret;
 }
 
+#if MPACK_FLOAT_POINT
 /** Generates a float tag. */
 MPACK_INLINE mpack_tag_t mpack_tag_float(float value) {
     mpack_tag_t ret = MPACK_TAG_ZERO;
@@ -278,6 +283,7 @@ MPACK_INLINE mpack_tag_t mpack_tag_double(double value) {
     ret.v.d = value;
     return ret;
 }
+#endif
 
 /** Generates an array tag. */
 MPACK_INLINE mpack_tag_t mpack_tag_array(int32_t count) {
@@ -483,6 +489,7 @@ MPACK_INLINE void mpack_store_i16(char* p, int16_t val) {mpack_store_u16(p, (uin
 MPACK_INLINE void mpack_store_i32(char* p, int32_t val) {mpack_store_u32(p, (uint32_t)val);}
 MPACK_INLINE void mpack_store_i64(char* p, int64_t val) {mpack_store_u64(p, (uint64_t)val);}
 
+#if MPACK_FLOAT_POINT
 MPACK_INLINE float mpack_load_float(const char* p) {
     MPACK_CHECK_FLOAT_ORDER();
     union {
@@ -522,6 +529,7 @@ MPACK_INLINE void mpack_store_double(char* p, double value) {
     v.d = value;
     mpack_store_u64(p, v.u);
 }
+#endif
 
 /** @endcond */
 
@@ -540,8 +548,10 @@ MPACK_INLINE void mpack_store_double(char* p, double value) {
 #define MPACK_TAG_SIZE_I16      3
 #define MPACK_TAG_SIZE_I32      5
 #define MPACK_TAG_SIZE_I64      9
+#if MPACK_FLOAT_POINT
 #define MPACK_TAG_SIZE_FLOAT    5
 #define MPACK_TAG_SIZE_DOUBLE   9
+#endif
 #define MPACK_TAG_SIZE_FIXARRAY 1
 #define MPACK_TAG_SIZE_ARRAY16  3
 #define MPACK_TAG_SIZE_ARRAY32  5

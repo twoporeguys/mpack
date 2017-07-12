@@ -141,6 +141,7 @@ int32_t mpack_expect_i32(mpack_reader_t* reader);
  */
 int64_t mpack_expect_i64(mpack_reader_t* reader);
 
+#if MPACK_FLOAT_POINT
 /**
  * Reads a number, returning the value as a float. The underlying value can be an
  * integer, float or double; the value is converted to a float.
@@ -179,6 +180,7 @@ float mpack_expect_float_strict(mpack_reader_t* reader);
  */
 double mpack_expect_double_strict(mpack_reader_t* reader);
 
+#endif
 /**
  * @}
  */
@@ -424,6 +426,7 @@ MPACK_INLINE int mpack_expect_int_max(mpack_reader_t* reader, int max_value) {
     return mpack_expect_int_range(reader, 0, max_value);
 }
 
+#if MPACK_FLOAT_POINT
 /**
  * Reads a number, ensuring that it falls within the given range and returning
  * the value as a float. The underlying value can be an integer, float or
@@ -448,6 +451,7 @@ float mpack_expect_float_range(mpack_reader_t* reader, float min_value, float ma
  */
 double mpack_expect_double_range(mpack_reader_t* reader, double min_value, double max_value);
 
+#endif
 /**
  * @}
  */

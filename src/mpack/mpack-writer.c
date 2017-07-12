@@ -461,8 +461,10 @@ void mpack_write_tag(mpack_writer_t* writer, mpack_tag_t value) {
     switch (value.type) {
         case mpack_type_nil:    mpack_write_nil   (writer);            break;
         case mpack_type_bool:   mpack_write_bool  (writer, value.v.b); break;
+        #if MPACK_FLOAT_POINT
         case mpack_type_float:  mpack_write_float (writer, value.v.f); break;
         case mpack_type_double: mpack_write_double(writer, value.v.d); break;
+	#endif
         case mpack_type_int:    mpack_write_int   (writer, value.v.i); break;
         case mpack_type_uint:   mpack_write_uint  (writer, value.v.u); break;
 
@@ -569,6 +571,7 @@ MPACK_STATIC_INLINE void mpack_encode_i64(char* p, int64_t value) {
     mpack_store_i64(p + 1, value);
 }
 
+#if MPACK_FLOAT_POINT
 MPACK_STATIC_INLINE void mpack_encode_float(char* p, float value) {
     mpack_store_u8(p, 0xca);
     mpack_store_float(p + 1, value);
@@ -578,6 +581,7 @@ MPACK_STATIC_INLINE void mpack_encode_double(char* p, double value) {
     mpack_store_u8(p, 0xcb);
     mpack_store_double(p + 1, value);
 }
+#endif
 
 MPACK_STATIC_INLINE void mpack_encode_fixarray(char* p, uint8_t count) {
     mpack_assert(count <= 15);
@@ -877,6 +881,7 @@ void mpack_write_i64(mpack_writer_t* writer, int64_t value) {
     }
 }
 
+#if MPACK_FLOAT_POINT
 void mpack_write_float(mpack_writer_t* writer, float value) {
     mpack_writer_track_element(writer);
     MPACK_WRITE_ENCODED(mpack_encode_float, MPACK_TAG_SIZE_FLOAT, value);
@@ -885,6 +890,7 @@ void mpack_write_double(mpack_writer_t* writer, double value) {
     mpack_writer_track_element(writer);
     MPACK_WRITE_ENCODED(mpack_encode_double, MPACK_TAG_SIZE_DOUBLE, value);
 }
+#endif
 
 void mpack_start_array(mpack_writer_t* writer, uint32_t count) {
     mpack_writer_track_element(writer);

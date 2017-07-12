@@ -57,8 +57,10 @@ const char* mpack_type_to_string(mpack_type_t type) {
         #define MPACK_TYPE_STRING_CASE(e) case e: return #e
         MPACK_TYPE_STRING_CASE(mpack_type_nil);
         MPACK_TYPE_STRING_CASE(mpack_type_bool);
+        #if MPACK_FLOAT_POINT
         MPACK_TYPE_STRING_CASE(mpack_type_float);
         MPACK_TYPE_STRING_CASE(mpack_type_double);
+	#endif
         MPACK_TYPE_STRING_CASE(mpack_type_int);
         MPACK_TYPE_STRING_CASE(mpack_type_uint);
         MPACK_TYPE_STRING_CASE(mpack_type_str);
@@ -129,6 +131,7 @@ int mpack_tag_cmp(mpack_tag_t left, mpack_tag_t right) {
             }
             return (int)left.exttype - (int)right.exttype;
 
+        #if MPACK_FLOAT_POINT
         // floats should not normally be compared for equality. we compare
         // with memcmp() to silence compiler warnings, but this will return
         // equal if both are NaNs with the same representation (though we may
@@ -144,6 +147,7 @@ int mpack_tag_cmp(mpack_tag_t left, mpack_tag_t right) {
             return mpack_memcmp(&left.v.f, &right.v.f, sizeof(left.v.f));
         case mpack_type_double:
             return mpack_memcmp(&left.v.d, &right.v.d, sizeof(left.v.d));
+	#endif
 
         default:
             break;
@@ -171,12 +175,14 @@ void mpack_tag_debug_describe(mpack_tag_t tag, char* buffer, size_t buffer_size)
         case mpack_type_uint:
             mpack_snprintf(buffer, buffer_size, "uint %" PRIu64, tag.v.u);
             break;
+        #if MPACK_FLOAT_POINT
         case mpack_type_float:
             mpack_snprintf(buffer, buffer_size, "float %f", tag.v.f);
             break;
         case mpack_type_double:
             mpack_snprintf(buffer, buffer_size, "double %f", tag.v.d);
             break;
+	#endif
         case mpack_type_str:
             mpack_snprintf(buffer, buffer_size, "str of %u bytes", tag.v.l);
             break;

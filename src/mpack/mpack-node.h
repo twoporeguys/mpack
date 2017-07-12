@@ -144,8 +144,10 @@ struct mpack_node_data_t {
     union
     {
         bool     b; /* The value if the type is bool. */
+        #if MPACK_FLOAT_POINT
         float    f; /* The value if the type is float. */
         double   d; /* The value if the type is double. */
+	#endif
         int64_t  i; /* The value if the type is signed int. */
         uint64_t u; /* The value if the type is unsigned int. */
         size_t offset; /* The byte offset for str, bin and ext */
@@ -732,6 +734,7 @@ MPACK_INLINE int mpack_node_int(mpack_node_t node) {
     return 0;
 }
 
+#if MPACK_FLOAT_POINT
 /**
  * Returns the float value of the node. The underlying value can be an
  * integer, float or double; the value is converted to a float.
@@ -819,6 +822,7 @@ MPACK_INLINE double mpack_node_double_strict(mpack_node_t node) {
     mpack_node_flag_error(node, mpack_error_type);
     return 0.0;
 }
+#endif
 
 /**
  * @}
