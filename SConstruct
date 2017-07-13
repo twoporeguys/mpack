@@ -173,6 +173,9 @@ if ARGUMENTS.get('all'):
     AddBuilds("noio-expect", ["-DMPACK_READER=1", "-DMPACK_EXPECT=1"] + noioconfigs + cflags)
     AddBuilds("noio-node", ["-DMPACK_NODE=1"] + noioconfigs + cflags)
 
+    # no floating point
+    AddBuilds("no-float", ["-DMPACK_FLOAT_POINT=0"] + cflags)
+
     # embedded builds without libc (using builtins)
     AddBuilds("embed-writer", ["-DMPACK_WRITER=1"] + cflags)
     AddBuilds("embed-reader", ["-DMPACK_READER=1"] + cflags)
