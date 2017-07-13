@@ -516,6 +516,7 @@ static void test_expect_tracking() {
 }
 #endif
 
+#if MPACK_FLOAT_POINT
 static void test_expect_reals() {
     // these are some very simple floats that don't really test IEEE 742 conformance;
     // this section could use some improvement
@@ -568,6 +569,7 @@ static void test_expect_reals_range() {
     TEST_SIMPLE_READ_ERROR("\x00", 1.0 == mpack_expect_double_range(&reader, 1.0, 2.0f), mpack_error_type);
     TEST_SIMPLE_READ_ASSERT("\x00", mpack_expect_double_range(reader, 1.0, -1.0));
 }
+#endif
 
 static void test_expect_bad_type() {
     // test that all reader functions correctly handle badly typed data
@@ -581,10 +583,12 @@ static void test_expect_bad_type() {
     TEST_SIMPLE_READ_ERROR("\xc0", 0 == mpack_expect_i16(&reader), mpack_error_type);
     TEST_SIMPLE_READ_ERROR("\xc0", 0 == mpack_expect_i32(&reader), mpack_error_type);
     TEST_SIMPLE_READ_ERROR("\xc0", 0 == mpack_expect_i64(&reader), mpack_error_type);
+    #if MPACK_FLOAT_POINT
     TEST_SIMPLE_READ_ERROR("\xc0", 0.0f == mpack_expect_float(&reader), mpack_error_type);
     TEST_SIMPLE_READ_ERROR("\xc0", 0.0 == mpack_expect_double(&reader), mpack_error_type);
     TEST_SIMPLE_READ_ERROR("\xc0", 0.0f == mpack_expect_float_strict(&reader), mpack_error_type);
     TEST_SIMPLE_READ_ERROR("\xc0", 0.0 == mpack_expect_double_strict(&reader), mpack_error_type);
+    #endif
 }
 
 static void test_expect_pre_error() {
@@ -599,10 +603,12 @@ static void test_expect_pre_error() {
     TEST_SIMPLE_READ_ERROR("", 0 == mpack_expect_i16(&reader), mpack_error_invalid);
     TEST_SIMPLE_READ_ERROR("", 0 == mpack_expect_i32(&reader), mpack_error_invalid);
     TEST_SIMPLE_READ_ERROR("", 0 == mpack_expect_i64(&reader), mpack_error_invalid);
+    #if MPACK_FLOAT_POINT
     TEST_SIMPLE_READ_ERROR("", 0.0f == mpack_expect_float(&reader), mpack_error_invalid);
     TEST_SIMPLE_READ_ERROR("", 0.0 == mpack_expect_double(&reader), mpack_error_invalid);
     TEST_SIMPLE_READ_ERROR("", 0.0f == mpack_expect_float_strict(&reader), mpack_error_invalid);
     TEST_SIMPLE_READ_ERROR("", 0.0 == mpack_expect_double_strict(&reader), mpack_error_invalid);
+    #endif
 }
 
 static void test_expect_str() {
@@ -1176,8 +1182,10 @@ void test_expect() {
     #if MPACK_READ_TRACKING
     test_expect_tracking();
     #endif
+    #if MPACK_FLOAT_POINT
     test_expect_reals();
     test_expect_reals_range();
+    #endif
     test_expect_bad_type();
     test_expect_pre_error();
     test_expect_streaming();

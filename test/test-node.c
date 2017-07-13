@@ -434,6 +434,7 @@ static void test_node_read_misc() {
     TEST_TREE_DESTROY_ERROR(&tree, mpack_error_bug);
 }
 
+#if MPACK_FLOAT_POINT
 static void test_node_read_floats() {
     mpack_node_data_t pool[128];
 
@@ -475,6 +476,7 @@ static void test_node_read_floats() {
     TEST_SIMPLE_TREE_READ_ERROR("\x00", 0.0 == mpack_node_double_strict(node), mpack_error_type);
     TEST_SIMPLE_TREE_READ_ERROR("\xd0\x00", 0.0 == mpack_node_double_strict(node), mpack_error_type);
 }
+#endif
 
 static void test_node_read_bad_type() {
     mpack_node_data_t pool[128];
@@ -492,10 +494,12 @@ static void test_node_read_bad_type() {
     TEST_SIMPLE_TREE_READ_ERROR("\xc0", 0 == mpack_node_i32(node), mpack_error_type);
     TEST_SIMPLE_TREE_READ_ERROR("\xc0", 0 == mpack_node_i64(node), mpack_error_type);
     TEST_SIMPLE_TREE_READ_ERROR("\xc0", 0 == mpack_node_int(node), mpack_error_type);
+    #if MPACK_FLOAT_POINT
     TEST_SIMPLE_TREE_READ_ERROR("\xc0", 0.0f == mpack_node_float(node), mpack_error_type);
     TEST_SIMPLE_TREE_READ_ERROR("\xc0", 0.0 == mpack_node_double(node), mpack_error_type);
     TEST_SIMPLE_TREE_READ_ERROR("\xc0", 0.0f == mpack_node_float_strict(node), mpack_error_type);
     TEST_SIMPLE_TREE_READ_ERROR("\xc0", 0.0 == mpack_node_double_strict(node), mpack_error_type);
+    #endif
 }
 
 static void test_node_read_possible() {
@@ -574,10 +578,12 @@ static void test_node_read_pre_error() {
     TEST_SIMPLE_TREE_READ_ERROR("", 0 == mpack_node_i64(node), mpack_error_invalid);
     TEST_SIMPLE_TREE_READ_ERROR("", 0 == mpack_node_int(node), mpack_error_invalid);
 
+    #if MPACK_FLOAT_POINT
     TEST_SIMPLE_TREE_READ_ERROR("", 0.0f == mpack_node_float(node), mpack_error_invalid);
     TEST_SIMPLE_TREE_READ_ERROR("", 0.0 == mpack_node_double(node), mpack_error_invalid);
     TEST_SIMPLE_TREE_READ_ERROR("", 0.0f == mpack_node_float_strict(node), mpack_error_invalid);
     TEST_SIMPLE_TREE_READ_ERROR("", 0.0 == mpack_node_double_strict(node), mpack_error_invalid);
+    #endif
 
     TEST_SIMPLE_TREE_READ_ERROR("", 0 == mpack_node_array_length(node), mpack_error_invalid);
     TEST_SIMPLE_TREE_READ_ERROR("", &tree.nil_node == mpack_node_array_at(node, 0).data, mpack_error_invalid);
@@ -1144,7 +1150,9 @@ void test_node(void) {
 
     // other
     test_node_read_misc();
+    #if MPACK_FLOAT_POINT
     test_node_read_floats();
+    #endif
     test_node_read_bad_type();
     test_node_read_possible();
     test_node_read_pre_error();

@@ -44,15 +44,22 @@
 #include <sys/types.h>
 #endif
 
+#ifndef  MPACK_FLOAT_POINT
+#define MPACK_FLOAT_POINT 1
+#endif
+
+#if MPACK_FLOAT_POINT
 #ifdef __cplusplus
 #include <limits>
 #define MPACK_INFINITY std::numeric_limits<float>::infinity()
 #else
 #define MPACK_INFINITY INFINITY
 #endif
+#endif
 
 #include "mpack/mpack.h"
 
+#if MPACK_FLOAT_POINT
 #if !MPACK_FINITE_MATH
     #if defined(WIN32)
         #include <float.h>
@@ -70,6 +77,7 @@
     #if !defined(isnanf) && !defined(MPACK_ISNANF_IS_FUNC)
         #define isnanf isnan
     #endif
+#endif
 #endif
 
 extern mpack_tag_t (*fn_mpack_tag_nil)(void);

@@ -271,6 +271,7 @@ static void test_compare_print() {
     MPACK_FREE(actual_data);
 }
 
+#if MPACK_FLOAT_POINT
 #if MPACK_READER
 static void test_print(void) {
 
@@ -334,6 +335,7 @@ static void test_node_print(void) {
     TEST_TRUE(mpack_ok == mpack_tree_destroy(&tree));
     test_compare_print();
 }
+#endif
 #endif
 
 #if MPACK_READER
@@ -916,11 +918,13 @@ void test_file(void) {
     FILE* blank = fopen(test_blank_filename, "wb");
     fclose(blank);
 
+    #if MPACK_FLOAT_POINT
     #if MPACK_READER
     test_print();
     #endif
     #if MPACK_NODE
     test_node_print();
+    #endif
     #endif
 
     #if MPACK_WRITER

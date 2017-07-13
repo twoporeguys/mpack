@@ -124,6 +124,7 @@ static void test_tags_simple(void) {
 
 }
 
+#if MPACK_FLOAT_POINT
 static void test_tags_reals(void) {
 
     // types
@@ -167,6 +168,7 @@ static void test_tags_reals(void) {
     TEST_TRUE(false == mpack_tag_equal(mpack_tag_float(NAN), mpack_tag_double(NAN)));
 
 }
+#endif
 
 static void test_tags_compound() {
     TEST_TRUE(mpack_tag_array(0).type == mpack_type_array);
@@ -261,8 +263,10 @@ static void test_strings() {
     #define TEST_ERROR_TYPE(type) test_string(mpack_type_to_string(mpack_type_##type), #type)
     TEST_ERROR_TYPE(nil);
     TEST_ERROR_TYPE(bool);
+    #if MPACK_FLOAT_POINT
     TEST_ERROR_TYPE(float);
     TEST_ERROR_TYPE(double);
+    #endif
     TEST_ERROR_TYPE(int);
     TEST_ERROR_TYPE(uint);
     TEST_ERROR_TYPE(str);
@@ -419,7 +423,9 @@ static void test_utf8_check(void) {
 void test_common() {
     test_tags_special();
     test_tags_simple();
+    #if MPACK_FLOAT_POINT
     test_tags_reals();
+    #endif
     test_tags_compound();
 
     test_strings();

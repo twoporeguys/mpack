@@ -322,6 +322,7 @@ static void test_write_simple_misc() {
     TEST_SIMPLE_WRITE("\xc2", mpack_write_false(&writer));
     TEST_SIMPLE_WRITE("\xc3", mpack_write_true(&writer));
 
+    #if MPACK_FLOAT_POINT
     // we just test a few floats for now. this could certainly be extended to
     // test more values like subnormal floats, infinities, etc.
     TEST_SIMPLE_WRITE("\xca\x00\x00\x00\x00", mpack_write_float(&writer, 0.0f));
@@ -330,6 +331,7 @@ static void test_write_simple_misc() {
     TEST_SIMPLE_WRITE("\xcb\x00\x00\x00\x00\x00\x00\x00\x00", mpack_write_double(&writer, 0.0));
     TEST_SIMPLE_WRITE("\xcb\x40\x09\x21\xfb\x53\xc8\xd4\xf1", mpack_write_double(&writer, 3.14159265));
     TEST_SIMPLE_WRITE("\xcb\xc0\x09\x21\xfb\x53\xc8\xd4\xf1", mpack_write_double(&writer, -3.14159265));
+    #endif
 
     TEST_SIMPLE_WRITE("\xde\xad\xbe\xef", mpack_write_object_bytes(&writer, "\xde\xad\xbe\xef", 4));
 
@@ -892,6 +894,7 @@ static void test_write_generic(void) {
     TEST_SIMPLE_WRITE("\xce\xff\xff\xff\xff", mpack_write(&writer, (uint64_t)UINT32_MAX));
     TEST_SIMPLE_WRITE("\xcf\xff\xff\xff\xff\xff\xff\xff\xff", mpack_write(&writer, (uint64_t)UINT64_MAX));
 
+    #if MPACK_FLOAT_POINT
     // float and double
     // TODO: we just test a few floats for now. this could certainly be extended to
     // test more values like subnormal floats, infinities, etc.
@@ -901,6 +904,7 @@ static void test_write_generic(void) {
     TEST_SIMPLE_WRITE("\xcb\x00\x00\x00\x00\x00\x00\x00\x00", mpack_write(&writer, (double)0.0));
     TEST_SIMPLE_WRITE("\xcb\x40\x09\x21\xfb\x53\xc8\xd4\xf1", mpack_write(&writer, (double)3.14159265));
     TEST_SIMPLE_WRITE("\xcb\xc0\x09\x21\xfb\x53\xc8\xd4\xf1", mpack_write(&writer, (double)-3.14159265));
+    #endif
 
     // bool
     // TODO: when we pass direct true or false into the _Generic it seems not to emit the correct stream
@@ -940,8 +944,10 @@ static void test_write_generic_kv(void) {
     TEST_SIMPLE_WRITE("\xa3""foo""\xcf\xff\xff\xff\xff\xff\xff\xff\xff", mpack_write_kv(&writer, key, (uint64_t)UINT64_MAX));
 
     // float, double and bool
+    #if MPACK_FLOAT_POINT
     TEST_SIMPLE_WRITE("\xa3""foo""\xca\xc0\x2d\xf3\xb6", mpack_write_kv(&writer, key, (float)-2.718f));
     TEST_SIMPLE_WRITE("\xa3""foo""\xcb\xc0\x09\x21\xfb\x53\xc8\xd4\xf1", mpack_write_kv(&writer, key, (double)-3.14159265));
+    #endif
     TEST_SIMPLE_WRITE("\xa3""foo""\xc2", mpack_write_kv(&writer, key, (bool)false));
 
     // char *, const char *, literal
